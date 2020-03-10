@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Password Kitchen</title>
+</head>
+<body class="background-{{ state }}">
+<h1>Password Kitchen</h1>
+<div class="card-row">
+    <div class="card">
+        <h2>Hash</h2>
+        <form action="/hash" method="post">
+            <input type="text" name="password" id="passw-1" placeholder="password" required>
+            <button type="submit">Hash it!</button>
+            <textarea name="hash" id="hashed-readonly"
+                      rows="5" placeholder="hash" readonly>{{ session.get('result', '') }}</textarea>
+        </form>
+    </div>
+    <div class="card">
+        <h2>Verify</h2>
+        <form action="/verify" method="post">
+            <input type="text" name="password" id="passw-2" placeholder="password"
+                   value="{{ session.get('plain_text_pw', '') }}" required>
+            <textarea name="hash" id="" rows="5" placeholder="hash"
+                      required>{{ session.get('hashed_pw', '') }}</textarea>
+            <button type="submit">Verify it!</button>
+        </form>
+        {% if state != 'default' %}
+            <h2 class="text-{{ state }}">
+                {% if state == 'verified' %}
+                    It's a match! :)
+                {% else %}
+                    Doesn't match. :(
+                {% endif %}
+            </h2>
+        {% endif %}
+    </div>
+
+</div>
+
+
+</body>
+</html>
